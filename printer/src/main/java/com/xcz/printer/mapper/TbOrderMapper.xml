@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xcz.printer.mapper.TbOrderMapper" >
+  <resultMap id="BaseResultMap" type="com.xcz.printer.pojo.TbOrder" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="rec_phone" property="recPhone" jdbcType="VARCHAR" />
+    <result column="rec_name" property="recName" jdbcType="VARCHAR" />
+    <result column="rec_address" property="recAddress" jdbcType="VARCHAR" />
+    <result column="number" property="number" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file" property="file" jdbcType="VARCHAR" />
+    <result column="page" property="page" jdbcType="INTEGER" />
+    <result column="deliver" property="deliver" jdbcType="VARCHAR" />
+    <result column="style" property="style" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="latest_time" property="latestTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, shop_id, rec_phone, rec_name, rec_address, number, type, price, file_name, 
+    file, page, deliver, style, status, create_time, finish_time, latest_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xcz.printer.pojo.TbOrderExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xcz.printer.pojo.TbOrderExample" >
+    delete from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xcz.printer.pojo.TbOrder" >
+    insert into tb_order (id, user_id, shop_id, 
+      rec_phone, rec_name, rec_address, 
+      number, type, price, 
+      file_name, file, page, 
+      deliver, style, status, 
+      create_time, finish_time, latest_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, 
+      #{recPhone,jdbcType=VARCHAR}, #{recName,jdbcType=VARCHAR}, #{recAddress,jdbcType=VARCHAR}, 
+      #{number,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, 
+      #{fileName,jdbcType=VARCHAR}, #{file,jdbcType=VARCHAR}, #{page,jdbcType=INTEGER}, 
+      #{deliver,jdbcType=VARCHAR}, #{style,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{finishTime,jdbcType=TIMESTAMP}, #{latestTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xcz.printer.pojo.TbOrder" >
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="shopId != null" >
+        shop_id,
+      </if>
+      <if test="recPhone != null" >
+        rec_phone,
+      </if>
+      <if test="recName != null" >
+        rec_name,
+      </if>
+      <if test="recAddress != null" >
+        rec_address,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="file != null" >
+        file,
+      </if>
+      <if test="page != null" >
+        page,
+      </if>
+      <if test="deliver != null" >
+        deliver,
+      </if>
+      <if test="style != null" >
+        style,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="latestTime != null" >
+        latest_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="recPhone != null" >
+        #{recPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="recName != null" >
+        #{recName,jdbcType=VARCHAR},
+      </if>
+      <if test="recAddress != null" >
+        #{recAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null" >
+        #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="page != null" >
+        #{page,jdbcType=INTEGER},
+      </if>
+      <if test="deliver != null" >
+        #{deliver,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="latestTime != null" >
+        #{latestTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xcz.printer.pojo.TbOrderExample" resultType="java.lang.Integer" >
+    select count(*) from tb_order
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_order
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopId != null" >
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
+      <if test="record.recPhone != null" >
+        rec_phone = #{record.recPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recName != null" >
+        rec_name = #{record.recName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.recAddress != null" >
+        rec_address = #{record.recAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=INTEGER},
+      </if>
+      <if test="record.type != null" >
+        type = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.file != null" >
+        file = #{record.file,jdbcType=VARCHAR},
+      </if>
+      <if test="record.page != null" >
+        page = #{record.page,jdbcType=INTEGER},
+      </if>
+      <if test="record.deliver != null" >
+        deliver = #{record.deliver,jdbcType=VARCHAR},
+      </if>
+      <if test="record.style != null" >
+        style = #{record.style,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.finishTime != null" >
+        finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.latestTime != null" >
+        latest_time = #{record.latestTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_order
+    set id = #{record.id,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      shop_id = #{record.shopId,jdbcType=INTEGER},
+      rec_phone = #{record.recPhone,jdbcType=VARCHAR},
+      rec_name = #{record.recName,jdbcType=VARCHAR},
+      rec_address = #{record.recAddress,jdbcType=VARCHAR},
+      number = #{record.number,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      file_name = #{record.fileName,jdbcType=VARCHAR},
+      file = #{record.file,jdbcType=VARCHAR},
+      page = #{record.page,jdbcType=INTEGER},
+      deliver = #{record.deliver,jdbcType=VARCHAR},
+      style = #{record.style,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      finish_time = #{record.finishTime,jdbcType=TIMESTAMP},
+      latest_time = #{record.latestTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xcz.printer.pojo.TbOrder" >
+    update tb_order
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null" >
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="recPhone != null" >
+        rec_phone = #{recPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="recName != null" >
+        rec_name = #{recName,jdbcType=VARCHAR},
+      </if>
+      <if test="recAddress != null" >
+        rec_address = #{recAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null" >
+        number = #{number,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="file != null" >
+        file = #{file,jdbcType=VARCHAR},
+      </if>
+      <if test="page != null" >
+        page = #{page,jdbcType=INTEGER},
+      </if>
+      <if test="deliver != null" >
+        deliver = #{deliver,jdbcType=VARCHAR},
+      </if>
+      <if test="style != null" >
+        style = #{style,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="latestTime != null" >
+        latest_time = #{latestTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xcz.printer.pojo.TbOrder" >
+    update tb_order
+    set user_id = #{userId,jdbcType=INTEGER},
+      shop_id = #{shopId,jdbcType=INTEGER},
+      rec_phone = #{recPhone,jdbcType=VARCHAR},
+      rec_name = #{recName,jdbcType=VARCHAR},
+      rec_address = #{recAddress,jdbcType=VARCHAR},
+      number = #{number,jdbcType=INTEGER},
+      type = #{type,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file = #{file,jdbcType=VARCHAR},
+      page = #{page,jdbcType=INTEGER},
+      deliver = #{deliver,jdbcType=VARCHAR},
+      style = #{style,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      latest_time = #{latestTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

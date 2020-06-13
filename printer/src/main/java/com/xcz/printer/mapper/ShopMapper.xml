@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xcz.printer.mapper.ShopMapper" >
+  <resultMap id="BaseResultMap" type="com.xcz.printer.pojo.Shop" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="shop_name" property="shopName" jdbcType="VARCHAR" />
+    <result column="location" property="location" jdbcType="VARCHAR" />
+    <result column="property" property="property" jdbcType="INTEGER" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
+    <result column="product" property="product" jdbcType="VARCHAR" />
+    <result column="proPrice" property="proprice" jdbcType="VARCHAR" />
+    <result column="isColorful" property="iscolorful" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="lat" property="lat" jdbcType="DECIMAL" />
+    <result column="lng" property="lng" jdbcType="DECIMAL" />
+    <result column="single_pure_price" property="singlePurePrice" jdbcType="DECIMAL" />
+    <result column="double_pure_price" property="doublePurePrice" jdbcType="DECIMAL" />
+    <result column="single_color_price" property="singleColorPrice" jdbcType="DECIMAL" />
+    <result column="double_color_price" property="doubleColorPrice" jdbcType="DECIMAL" />
+    <result column="deliver_price" property="deliverPrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, shop_name, location, property, picture, product, proPrice, isColorful, remark, 
+    lat, lng, single_pure_price, double_pure_price, single_color_price, double_color_price, 
+    deliver_price
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xcz.printer.pojo.ShopExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shop
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xcz.printer.pojo.ShopExample" >
+    delete from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xcz.printer.pojo.Shop" >
+    insert into shop (id, shop_name, location, 
+      property, picture, product, 
+      proPrice, isColorful, remark, 
+      lat, lng, single_pure_price, 
+      double_pure_price, single_color_price, double_color_price, 
+      deliver_price)
+    values (#{id,jdbcType=INTEGER}, #{shopName,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, 
+      #{property,jdbcType=INTEGER}, #{picture,jdbcType=VARCHAR}, #{product,jdbcType=VARCHAR}, 
+      #{proprice,jdbcType=VARCHAR}, #{iscolorful,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{lat,jdbcType=DECIMAL}, #{lng,jdbcType=DECIMAL}, #{singlePurePrice,jdbcType=DECIMAL}, 
+      #{doublePurePrice,jdbcType=DECIMAL}, #{singleColorPrice,jdbcType=DECIMAL}, #{doubleColorPrice,jdbcType=DECIMAL}, 
+      #{deliverPrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xcz.printer.pojo.Shop" >
+    insert into shop
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="shopName != null" >
+        shop_name,
+      </if>
+      <if test="location != null" >
+        location,
+      </if>
+      <if test="property != null" >
+        property,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="product != null" >
+        product,
+      </if>
+      <if test="proprice != null" >
+        proPrice,
+      </if>
+      <if test="iscolorful != null" >
+        isColorful,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="lat != null" >
+        lat,
+      </if>
+      <if test="lng != null" >
+        lng,
+      </if>
+      <if test="singlePurePrice != null" >
+        single_pure_price,
+      </if>
+      <if test="doublePurePrice != null" >
+        double_pure_price,
+      </if>
+      <if test="singleColorPrice != null" >
+        single_color_price,
+      </if>
+      <if test="doubleColorPrice != null" >
+        double_color_price,
+      </if>
+      <if test="deliverPrice != null" >
+        deliver_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="shopName != null" >
+        #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null" >
+        #{property,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null" >
+        #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="proprice != null" >
+        #{proprice,jdbcType=VARCHAR},
+      </if>
+      <if test="iscolorful != null" >
+        #{iscolorful,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        #{lat,jdbcType=DECIMAL},
+      </if>
+      <if test="lng != null" >
+        #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="singlePurePrice != null" >
+        #{singlePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doublePurePrice != null" >
+        #{doublePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="singleColorPrice != null" >
+        #{singleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleColorPrice != null" >
+        #{doubleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverPrice != null" >
+        #{deliverPrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xcz.printer.pojo.ShopExample" resultType="java.lang.Integer" >
+    select count(*) from shop
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update shop
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopName != null" >
+        shop_name = #{record.shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.location != null" >
+        location = #{record.location,jdbcType=VARCHAR},
+      </if>
+      <if test="record.property != null" >
+        property = #{record.property,jdbcType=INTEGER},
+      </if>
+      <if test="record.picture != null" >
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
+      <if test="record.product != null" >
+        product = #{record.product,jdbcType=VARCHAR},
+      </if>
+      <if test="record.proprice != null" >
+        proPrice = #{record.proprice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iscolorful != null" >
+        isColorful = #{record.iscolorful,jdbcType=INTEGER},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lat != null" >
+        lat = #{record.lat,jdbcType=DECIMAL},
+      </if>
+      <if test="record.lng != null" >
+        lng = #{record.lng,jdbcType=DECIMAL},
+      </if>
+      <if test="record.singlePurePrice != null" >
+        single_pure_price = #{record.singlePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.doublePurePrice != null" >
+        double_pure_price = #{record.doublePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.singleColorPrice != null" >
+        single_color_price = #{record.singleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.doubleColorPrice != null" >
+        double_color_price = #{record.doubleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.deliverPrice != null" >
+        deliver_price = #{record.deliverPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update shop
+    set id = #{record.id,jdbcType=INTEGER},
+      shop_name = #{record.shopName,jdbcType=VARCHAR},
+      location = #{record.location,jdbcType=VARCHAR},
+      property = #{record.property,jdbcType=INTEGER},
+      picture = #{record.picture,jdbcType=VARCHAR},
+      product = #{record.product,jdbcType=VARCHAR},
+      proPrice = #{record.proprice,jdbcType=VARCHAR},
+      isColorful = #{record.iscolorful,jdbcType=INTEGER},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      lat = #{record.lat,jdbcType=DECIMAL},
+      lng = #{record.lng,jdbcType=DECIMAL},
+      single_pure_price = #{record.singlePurePrice,jdbcType=DECIMAL},
+      double_pure_price = #{record.doublePurePrice,jdbcType=DECIMAL},
+      single_color_price = #{record.singleColorPrice,jdbcType=DECIMAL},
+      double_color_price = #{record.doubleColorPrice,jdbcType=DECIMAL},
+      deliver_price = #{record.deliverPrice,jdbcType=DECIMAL}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xcz.printer.pojo.Shop" >
+    update shop
+    <set >
+      <if test="shopName != null" >
+        shop_name = #{shopName,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="property != null" >
+        property = #{property,jdbcType=INTEGER},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
+      <if test="product != null" >
+        product = #{product,jdbcType=VARCHAR},
+      </if>
+      <if test="proprice != null" >
+        proPrice = #{proprice,jdbcType=VARCHAR},
+      </if>
+      <if test="iscolorful != null" >
+        isColorful = #{iscolorful,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="lat != null" >
+        lat = #{lat,jdbcType=DECIMAL},
+      </if>
+      <if test="lng != null" >
+        lng = #{lng,jdbcType=DECIMAL},
+      </if>
+      <if test="singlePurePrice != null" >
+        single_pure_price = #{singlePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doublePurePrice != null" >
+        double_pure_price = #{doublePurePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="singleColorPrice != null" >
+        single_color_price = #{singleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="doubleColorPrice != null" >
+        double_color_price = #{doubleColorPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deliverPrice != null" >
+        deliver_price = #{deliverPrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xcz.printer.pojo.Shop" >
+    update shop
+    set shop_name = #{shopName,jdbcType=VARCHAR},
+      location = #{location,jdbcType=VARCHAR},
+      property = #{property,jdbcType=INTEGER},
+      picture = #{picture,jdbcType=VARCHAR},
+      product = #{product,jdbcType=VARCHAR},
+      proPrice = #{proprice,jdbcType=VARCHAR},
+      isColorful = #{iscolorful,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      lat = #{lat,jdbcType=DECIMAL},
+      lng = #{lng,jdbcType=DECIMAL},
+      single_pure_price = #{singlePurePrice,jdbcType=DECIMAL},
+      double_pure_price = #{doublePurePrice,jdbcType=DECIMAL},
+      single_color_price = #{singleColorPrice,jdbcType=DECIMAL},
+      double_color_price = #{doubleColorPrice,jdbcType=DECIMAL},
+      deliver_price = #{deliverPrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

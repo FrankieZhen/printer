@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<header th:replace="admin/header::header-fragment">
+    <style type="text/css">
+        html,
+        body {
+            height: 100%;
+            margin: 0px;
+            padding: 0px
+        }
+        #container {
+            width: 100%;
+            height: 100%
+        }
+    </style>
+</header>
+<body class="hold-transition sidebar-mini" onload="loadScript()">>
+<div class="wrapper">
+    <!-- 引入页面头header-fragment -->
+    <div th:replace="admin/header::header-nav"></div>
+    <!-- 引入工具栏sidebar-fragment -->
+    <div th:replace="admin/sidebar::sidebar-fragment(${path})"></div>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">店铺信息</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+                                <form role="form" id="shopInfoForm">
+
+                                    <div class="form-group col-sm-8">
+                                        <div class="alert alert-danger" id="updateShop-info" style="display: none;"></div>
+                                    </div>
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>店铺名称</label>
+                                        <input type="text" class="form-control" id="shopName"
+                                               name="shopName"
+                                               th:value="${shopInfo.shopName}"
+                                               placeholder="店铺名称" >
+                                    </div>
+                                    <div class="form-group">
+                                        <label>店铺地址</label>
+                                        <input type="text" class="form-control" id="shopLocation"
+                                               name="shopLocation"
+                                               th:value="${shopInfo.location}"
+                                               placeholder="店铺地址">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>是否有彩色打印机</label>
+                                        <input type="text" class="form-control" id="iscolorful"
+                                               name="iscolorful"
+                                               th:value="${shopInfo.iscolorful}"
+                                               placeholder="请输入0或1">
+                                    </div>
+                                    <div>1：有彩色打印机 ， 0：无彩色打印机</div>
+                                    <div class="card-footer">
+                                        <button type="button" id="updateShopButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">确认修改
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">打印价格参数设置</h3>
+                            </div> <!-- /.card-body -->
+                            <div class="card-body">
+                                <form role="form" id="userInfoForm">
+                                    <div class="form-group col-sm-8">
+                                        <div class="alert alert-danger" id="updateShop-price" style="display: none;"></div>
+                                    </div>
+                                    <!-- input states -->
+                                    <div class="form-group">
+                                        <label class="control-label">黑白单面</label>
+                                        <input type="text" class="form-control" id="singlePure"
+                                               name="singlePure"
+                                               th:value="${shopInfo.singlePurePrice}"
+                                               placeholder="黑白单面价格">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">黑白双面</label>
+                                        <input type="text" class="form-control" id="doublePure"
+                                               name="doublePure"
+                                               th:value="${shopInfo.doublePurePrice}"
+                                               placeholder="黑白双面价格">
+                                    </div>
+                                    <div class="form-group" th:if="${shopInfo.iscolorful == 1 }">
+                                        <label class="control-label">彩色单面</label>
+                                        <input type="email" class="form-control" id="singleColor" name="singleColor"
+                                               th:value="${shopInfo.singleColorPrice}"
+                                               placeholder="彩色单面价格">
+                                    </div>
+                                    <div class="form-group" th:if="${shopInfo.iscolorful == 1 }">
+                                        <label class="control-label">彩色双面</label>
+                                        <input type="email" class="form-control" id="doubleColor" name="doubleColor"
+                                               th:value="${shopInfo.doubleColorPrice}"
+                                               placeholder="彩色双面价格">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">配送费</label>
+                                        <input type="text" class="form-control" id="deliver"
+                                               name="deliver"
+                                               th:value="${shopInfo.deliverPrice}"
+                                               placeholder="配送费价格">
+                                    </div>
+                                    <!--<label class="control-label">单位：元/每张</label>-->
+                                    <div>单位：元/每张 （除配送费外）</div>
+                                    <div class="card-footer">
+                                        <button type="button" id="updatePriceButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">确认修改
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-primary card-outline">
+                            <div class="card-header">
+                                <h3 class="card-title">位置信息更改</h3>
+                            </div> <!-- /.card-body -->
+
+                            <div id="container" style="width:380px;height:550px;border:#ccc solid 1px;"></div>
+
+                            <div class="card-body">
+                                <form role="form" id="footerForm">
+                                    <!-- input states -->
+                                    <label class="control-label">选择新的店铺位置信息并替换</label>
+
+                                    <div class="card-footer">
+                                        <button type="button" id="updateFooterButton" onsubmit="return false;"
+                                                class="btn btn-danger float-right">点击替换
+                                        </button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- 引入页脚footer-fragment -->
+    <div th:replace="admin/footer::footer-fragment"></div>
+</div>
+<!-- jQuery -->
+<script th:src="@{/admin/plugins/jquery/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/admin/plugins/jQueryUI/jquery-ui.min.js}"></script>
+<!-- Bootstrap 4 -->
+<script th:src="@{/admin/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/admin/dist/js/adminlte.min.js}"></script>
+<!-- sweetalert -->
+<script th:src="@{/admin/plugins/sweetalert/sweetalert.min.js}"></script>
+<script th:src="@{/admin/dist/js/configuration.js}"></script>
+<script th:src="@{/admin/dist/js/public.js}"></script>
+<script>
+    function init() {
+        var resultData;
+        $.ajax({
+            type: "GET",
+            url: "/admin/configurations/latlng",
+            async:false,  //同步方式发起请求
+
+            success: function (result) {
+                if (result.resultCode == 200&& result.data) {
+                    // $('li').attr('lat',result.data.lat)
+                    // $('li').attr('lng',result.data.lng)
+                    resultData  = result.data;
+                }
+            },
+            error: function () {
+                swal("获取当前店铺位置失败", {
+                    icon: "error",
+                });
+            }
+        });
+
+        // var lat = $('li').attr('lat');
+        // var lng = $('li').attr('lat');
+        var lat ;
+        var lng ;
+        if(resultData != null && resultData != undefined && resultData != ''){
+            lat = resultData.lat;
+            lng = resultData.lng;
+        }
+        // console.log(lat)
+        // console.log(lng)
+        var myLatlng ;
+        if(lat != null && lat != undefined && lat != '' && lng != null && lng != undefined && lng != ''){
+            myLatlng = new qq.maps.LatLng(lat, lng)
+        }else {
+            myLatlng = new qq.maps.LatLng(21.149965, 110.303024)
+        }
+        var myOptions = {
+            zoom: 16,
+            center: myLatlng
+        };
+        var map = new qq.maps.Map(document.getElementById("container"), myOptions);
+        //创建一个Marker
+        var marker = new qq.maps.Marker({
+            //设置Marker的位置坐标
+            position: myLatlng,
+            //设置显示Marker的地图
+            map: map
+        });
+
+        //设置Marker的可见性，为true时可见,false时不可见，默认属性为true
+        marker.setVisible(true);
+        //设置Marker的动画属性为从落下
+        marker.setAnimation(qq.maps.MarkerAnimation.DOWN);
+        //设置Marker是否可以被拖拽，为true时可拖拽，false时不可拖拽，默认属性为false
+        marker.setDraggable(true);
+        ////设置Marker自定义图标的属性，size是图标尺寸，该尺寸为显示图标的实际尺寸，origin是切图坐标，该坐标是相对于图片左上角默认为（0,0）的相对像素坐标，anchor是锚点坐标，描述经纬度点对应图标中的位置
+        var anchor = new qq.maps.Point(0, 39),
+            size = new qq.maps.Size(42, 68),
+            origin = new qq.maps.Point(0, 0),
+            icon = new qq.maps.MarkerImage(
+                "static/admin/dist/img/map/marker.png",
+                size,
+                origin,
+                anchor
+            );
+        marker.setIcon(icon);
+        //设置Marker阴影图片属性，size是图标尺寸，该尺寸为显示图标的实际尺寸，origin是切图坐标，该坐标是相对于图片左上角默认为（0,0）的相对像素坐标，anchor是锚点坐标，描述经纬度点对应图标中的位置
+        var anchorb = new qq.maps.Point(3, -30),
+            sizeb = new qq.maps.Size(42, 11),
+            origin = new qq.maps.Point(0, 0),
+            iconb = new qq.maps.MarkerImage(
+                "static/admin/dist/img/map/marker.png",
+                sizeb,
+                origin,
+                anchorb
+            );
+        marker.setShadow(iconb);
+        //设置标注的名称，当鼠标划过Marker时显示
+        marker.setTitle("测试");
+
+        //添加信息窗口
+        var info = new qq.maps.InfoWindow({
+            map: map
+        });
+        //获取标记的可拖动属性
+        info.open();
+        info.setContent('您当前所在的位置');
+        info.setPosition(marker.getPosition());
+        //标记Marker点击事件
+        qq.maps.event.addListener(marker, 'click', function() {
+            info.open();
+            info.setContent('<div style="text-align:center;white-space:nowrap;' +
+                'margin:10px;">单击标记</div>');
+            info.setPosition(marker.getPosition());
+        });
+        //设置Marker停止拖动事件
+        qq.maps.event.addListener(marker, 'dragend', function() {
+            info.open();
+            info.setContent('<div style="text-align:center;white-space:nowrap;' +
+                'margin:10px;">拖动标记</div>');
+            //getPosition()  返回Marker的位置
+            info.setPosition(marker.getPosition());
+        });
+
+        //添加监听事件  获取鼠标单击事件
+
+        qq.maps.event.addListener(map, 'click', function(event) {
+
+            var marker=new qq.maps.Marker({
+
+                position:event.latLng,
+
+                map:map
+
+            });
+
+            // alert('您点击的位置为: [' + event.latLng.getLat() + ', ' +
+            //     event.latLng.getLng() + ']');
+
+            $('li').attr('lat',event.latLng.getLat());
+            $('li').attr('lng',event.latLng.getLng());
+
+            qq.maps.event.addListener(map, 'click', function(event) {
+
+                marker.setMap(null);
+
+            });
+
+        });
+
+    }
+
+    function loadScript() {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = "https://map.qq.com/api/js?v=2.exp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&callback=init";
+        document.body.appendChild(script);
+    }
+</script>
+</body>
+</html>
